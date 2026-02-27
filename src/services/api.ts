@@ -1,4 +1,5 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const CHAT_BACKEND_URL = "https://sreecharan-desu-arthikbackend.hf.space";
 
 export const apiService = {
     async fetchUser(token: string) {
@@ -21,8 +22,16 @@ export const apiService = {
         return response;
     },
 
+    async fetchBookings(token: string) {
+        const response = await fetch(`${BACKEND_URL}/user/bookings`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error("Failed to fetch bookings");
+        return response.json();
+    },
+
     async chat(token: string, message: string) {
-        const response = await fetch(`${BACKEND_URL}/agent/chat`, {
+        const response = await fetch(`${CHAT_BACKEND_URL}/agent/chat`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -65,12 +65,21 @@ html.lenis body {
 .ease-expo {
   transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
+
 @import "tw-animate-css";
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-destructive-foreground: var(--destructive-foreground);
+}
+
+:root {
+  --destructive-foreground: oklch(1 0 0);
+}
+
+.dark {
+  --destructive-foreground: oklch(1 0 0);
 }
 
 :root {
