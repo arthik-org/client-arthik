@@ -1,11 +1,21 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ArthikScroll from "./components/ArthikScroll";
+import { Home } from "./pages/Home";
+import { LanguageProvider } from "./context/LanguageContext";
 import "./App.css";
 
 function App() {
   return (
-    <main className="min-h-screen bg-[#050505] selection:bg-white selection:text-black">
-      <ArthikScroll />
-    </main>
+    <LanguageProvider>
+      <Router>
+        <main className="min-h-screen bg-[#050505] selection:bg-white selection:text-black">
+          <Routes>
+            <Route path="/" element={<ArthikScroll />} />
+            <Route path="/home" element={<Home />} />
+          </Routes>
+        </main>
+      </Router>
+    </LanguageProvider>
   );
 }
 
