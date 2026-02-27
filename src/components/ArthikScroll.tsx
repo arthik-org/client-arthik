@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ const ArthikScroll: React.FC = () => {
 
     const images = useRef<HTMLImageElement[]>([]);
     const airPlane = useRef({ frame: 1 });
+    const navigate = useNavigate();
 
     // 1. Initialize Lenis for smooth scrolling
     useEffect(() => {
@@ -195,6 +197,17 @@ const ArthikScroll: React.FC = () => {
 
     return (
         <div ref={containerRef} className="relative w-full h-[900vh] bg-[#050505] selection:bg-white selection:text-black">
+            {/* Navbar / Login Button */}
+            <div className="fixed top-12 right-12 z-[70] flex items-center gap-8 pointer-events-auto">
+                <button
+                    onClick={() => navigate("/login")}
+                    className="text-white/40 text-[10px] tracking-[0.6em] uppercase hover:text-white transition-all duration-500 flex items-center gap-3 group"
+                >
+                    <div className="w-8 h-[1px] bg-white/20 group-hover:w-12 group-hover:bg-white transition-all duration-500" />
+                    Login
+                </button>
+            </div>
+
             {/* Scroll Progress Bar */}
             <div className="fixed right-12 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-6">
                 <div className="text-[9px] text-white/20 tracking-[0.6em] uppercase vertical-text transform rotate-180" style={{ writingMode: 'vertical-rl' }}>
