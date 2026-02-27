@@ -16,6 +16,10 @@ export function Topbar() {
     const { language, setLanguage, t } = useLanguage();
     const [isLangOpen, setIsLangOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [user] = useState<any>(() => {
+        const saved = localStorage.getItem("user");
+        return saved ? JSON.parse(saved) : null;
+    });
 
     const langRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLDivElement>(null);
@@ -106,8 +110,8 @@ export function Topbar() {
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
                         className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2"
                     >
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-slate-800 to-slate-600 flex items-center justify-center text-white font-medium text-sm shadow-sm ring-2 ring-white overflow-hidden">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="Profile avatar" className="w-full h-full object-cover" />
+                        <div className="w-9 h-9 rounded-full bg-[#E37400] text-white flex items-center justify-center text-sm font-medium shadow-sm ring-2 ring-white overflow-hidden uppercase">
+                            {user?.first_name?.[0] || user?.username?.[0] || "U"}
                         </div>
                         <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform duration-200", isProfileOpen && "rotate-180")} />
                     </button>
@@ -122,8 +126,10 @@ export function Topbar() {
                                 className="absolute right-0 mt-2 w-56 rounded-2xl border border-slate-100 bg-white p-1.5 shadow-xl shadow-slate-200/50 ring-1 ring-slate-900/5 origin-top-right z-50 flex flex-col"
                             >
                                 <div className="px-3 py-2.5 mb-1.5 border-b border-slate-100">
-                                    <p className="text-sm font-semibold text-slate-900 leading-none mb-1.5">Seetharam Damarla</p>
-                                    <p className="text-xs text-slate-500 leading-none">s.damarla@example.com</p>
+                                    <p className="text-sm font-semibold text-slate-900 leading-none mb-1.5">
+                                        {user?.first_name ? `${user.first_name} ${user.last_name || ""}` : user?.username || "Authorized User"}
+                                    </p>
+                                    <p className="text-xs text-slate-500 leading-none">{user?.email || "No email provided"}</p>
                                 </div>
                                 <div className="px-1 flex flex-col gap-0.5">
                                     <button className="w-full flex items-center gap-2.5 px-2.5 py-2 text-sm rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors">

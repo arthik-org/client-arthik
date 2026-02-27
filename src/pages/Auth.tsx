@@ -10,12 +10,37 @@ export const Auth: React.FC = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    const fetchAndStoreUser = async (token: string) => {
+        try {
+            const response = await fetch(`${BACKEND_URL}/user/`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const userData = await response.json();
+                const refinedData = typeof userData === 'string' ? { username: userData, email: "" } : userData;
+                localStorage.setItem("user", JSON.stringify(refinedData));
+            }
+        } catch (err) {
+            console.error("Failed to fetch user after login:", err);
+        }
+    };
+
     // Handle Google Callback
     React.useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
+        const tokenFromUrl = urlParams.get("token");
 
-        if (code) {
+        if (tokenFromUrl) {
+            // Backend already performed the handshake and sent the token directly
+            localStorage.setItem("access_token", tokenFromUrl);
+            localStorage.setItem("token_type", "bearer");
+            fetchAndStoreUser(tokenFromUrl).then(() => {
+                navigate("/home");
+            });
+        } else if (code) {
             handleGoogleCallback(code);
         }
     }, [window.location.search]);
@@ -38,6 +63,10 @@ export const Auth: React.FC = () => {
                 if (token) {
                     localStorage.setItem("access_token", token);
                     localStorage.setItem("token_type", "bearer");
+
+                    // Fetch the user data from /user/ immediately
+                    await fetchAndStoreUser(token);
+
                     navigate("/home");
                 } else {
                     setError("Could not retrieve access token.");
@@ -56,7 +85,7 @@ export const Auth: React.FC = () => {
         setLoading(true);
         try {
             const response = await fetch(`${BACKEND_URL}/auth/google/login`, {
-                method: "POST",
+                method: "GET",
             });
 
             if (response.ok) {
@@ -115,6 +144,10 @@ export const Auth: React.FC = () => {
                     const data = await response.json();
                     localStorage.setItem("access_token", data.access_token);
                     localStorage.setItem("token_type", data.token_type);
+
+                    // Fetch the user data from /user/ immediately
+                    await fetchAndStoreUser(data.access_token);
+
                     navigate("/home");
                 } else {
                     const errData = await response.json();

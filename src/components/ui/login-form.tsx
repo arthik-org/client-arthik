@@ -29,7 +29,6 @@ export default function LoginForm({
                 <RotatingEarth width={600} height={600} className="z-10" />
 
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/80 via-transparent to-transparent opacity-50" />
-
                 <div className="absolute bottom-20 left-20 z-20">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">

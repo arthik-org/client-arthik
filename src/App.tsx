@@ -20,6 +20,7 @@ function App() {
             } />
             <Route path="/login" element={<Auth />} />
             <Route path="/auth/google/callback" element={<Auth />} />
+            <Route path="/auth/callback" element={<Auth />} />
           </Routes>
         </main>
       </Router>
